@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Entornos de Desarrollo </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --bg-body: #F0F4F8;
+            --bg-card: #ffffff;
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --secondary: #10B981;
+            --text-main: #1E293B;
+            --text-light: #475569;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 16px;
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- LAYOUT --- */
+        .app-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        @media (min-width: 769px) {
+            .nav-container {
+                width: 260px;
+                height: 100vh;
+                padding: 2rem 1.5rem;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .nav-list {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                list-style: none;
+            }
+
+            .nav-item {
+                padding: 1rem;
+                border-radius: 12px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: var(--text-light);
+                font-weight: 600;
+                transition: all 0.2s;
+            }
+
+            .nav-item:hover {
+                background: var(--primary-light);
+                color: var(--primary);
+            }
+
+            .nav-item.active {
+                background: var(--primary);
+                color: white;
+                box-shadow: var(--shadow);
+            }
+
+            .logo {
+                font-size: 1.5rem;
+                font-weight: 800;
+                color: var(--primary);
+                margin-bottom: 2rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .nav-label {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-layout {
+                flex-direction: column-reverse;
+            }
+
+            .nav-container {
+                width: 100%;
+                height: var(--nav-height);
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                border-top: 1px solid #e2e8f0;
+                border-right: none;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                padding-bottom: env(safe-area-inset-bottom);
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+            }
+
+            .nav-list {
+                display: flex;
+                width: 100%;
+                justify-content: space-around;
+                list-style: none;
+            }
+
+            .nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.65rem;
+                color: var(--text-light);
+                gap: 4px;
+                padding: 5px;
+                width: 20%;
+            }
+
+            .nav-item.active {
+                color: var(--primary);
+                font-weight: 700;
+            }
+
+            .nav-item svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .logo {
+                display: none;
+            }
+        }
+
+        /* --- CONTENT --- */
+        .content-area {
+            flex: 1;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100%;
+            padding: 2rem;
+            scroll-behavior: smooth;
+        }
+
+        @media (max-width: 768px) {
+            .content-area {
+                padding: 1rem 1rem;
+                padding-bottom: calc(var(--nav-height) + 3rem);
+                height: 100vh;
+            }
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- UI ELEMENTS --- */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            border: 1px solid #f1f5f9;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+            font-weight: 700;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+
+        /* Chips for Models */
+        .chip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .chip {
+            padding: 8px 14px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* UML & Process Visuals */
+        .process-step {
+            background: #F8FAFC;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid #CBD5E1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .process-step strong {
+            display: block;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .uml-box {
+            border: 2px solid #334155;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-family: monospace;
+            position: relative;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Language Colors */
+        .lang-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            color: white;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .lang-java {
+            background-color: #EF4444;
+        }
+
+        .lang-python {
+            background: linear-gradient(90deg, #3B82F6 50%, #EAB308 50%);
+        }
+
+        .lang-js {
+            background-color: #F59E0B;
+            color: #000 !important;
+        }
+
+        .lang-csharp {
+            background-color: #9333EA;
+        }
+
+        .lang-php {
+            background-color: #6366F1;
+        }
+
+        .lang-ts {
+            background-color: #3B82F6;
+        }
+
+        .lang-go {
+            background-color: #06B6D4;
+        }
+
+        .lang-kotlin {
+            background-color: #A855F7;
+        }
+
+        .lang-swift {
+            background-color: #F97316;
+        }
+
+        .lang-cpp {
+            background-color: #1E40AF;
+        }
+
+        .soft-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 500px;
+        }
+
+        .soft-table th {
+            background: #f1f5f9;
+            text-align: left;
+            padding: 12px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .soft-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+            color: #475569;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .toggle-btn {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .gloss-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin: 0;
+            border-left-width: 5px;
+            border-left-style: solid;
+        }
+
+        .gloss-card strong {
+            display: block;
+            font-size: 1.15rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .gloss-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #475569;
+        }
+
+        /* CPU STYLES */
+        .cpu-board {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            background: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 800px) {
+            .cpu-board {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cpu-box {
+            background: #fff;
+            border: 2px solid #94a3b8;
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+        }
+
+        .component {
+            border: 2px solid #334155;
+            padding: 10px;
+            margin: 8px 0;
+            background: #f8fafc;
+            border-radius: 6px;
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .component.active {
+            background: #FCD34D;
+            border-color: #F59E0B;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+            z-index: 10;
+        }
+
+        .mem-cell {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 10px;
+            border-bottom: 1px solid #eee;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .mem-cell.active {
+            background: #FCD34D;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        .step-display {
+            background: #1E293B;
+            color: #10B981;
+            font-family: 'Fira Code', monospace;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .arrow-down {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <!-- NAVIGATION -->
+        <nav class="nav-container">
+            <div class="logo">Entornos de Desarrollo</div>
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="showView('lifecycle', this)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M2 12h20" />
+                    </svg>
+                    <span class="nav-label">Ciclo</span>
+                </li>
+                <li class="nav-item" onclick="showView('cpu', this)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                    </svg>
+                    <span class="nav-label">Ordenador</span>
+                </li>
+                <li class="nav-item" onclick="showView('uml', this)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                        </path>
+                    </svg>
+                    <span class="nav-label">UML</span>
+                </li>
+                <li class="nav-item" onclick="showView('languages', this)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <span class="nav-label">Lenguajes</span>
+                </li>
+                <li class="nav-item" onclick="showView('oop', this)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="5" r="3"></circle>
+                        <line x1="12" y1="8" x2="12" y2="21"></line>
+                        <line x1="8" y1="13" x2="16" y2="13"></line>
+                    </svg>
+                    <span class="nav-label">Glosario</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <div class="content-area">
+
+            <!-- 1. CICLO DE VIDA -->
+            <div id="lifecycle" class="view-section active">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+                    <h2 style="margin:0;">Ciclo de Vida</h2>
+                    <button onclick="downloadApp()"
+                        style="background:#1E293B; color:white; border:none; padding:10px 16px; border-radius:10px; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; gap:8px; font-weight:600; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Guardar Offline
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3>Modelos de Desarrollo (Detalle)</h3>
+                    <div class="chip-container">
+                        <button class="chip active" onclick="renderModel('waterfall', this)">Cascada</button>
+                        <button class="chip" onclick="renderModel('vmodel', this)">Modelo V</button>
+                        <button class="chip" onclick="renderModel('spiral', this)">Espiral</button>
+                        <button class="chip" onclick="renderModel('prototyping', this)">Prototipos</button>
+                        <button class="chip" onclick="renderModel('incremental', this)">Incremental</button>
+                        <button class="chip" onclick="renderModel('agile', this)">Ágil</button>
+                    </div>
+                    <div id="model-content" style="margin-bottom: 2rem;"></div>
+
+                    <button class="toggle-btn"
+                        onclick="document.getElementById('comp-table').style.display = document.getElementById('comp-table').style.display === 'none' ? 'block' : 'none'">
+                        Mostrar/Ocultar Tabla Comparativa Completa
+                    </button>
+
+                    <div id="comp-table" style="display:none; margin-top:1rem;">
+                        <div class="table-responsive">
+                            <table class="soft-table">
+                                <thead>
+                                    <tr>
+                                        <th>Modelo</th>
+                                        <th>Categoría</th>
+                                        <th>Características</th>
+                                        <th>Uso</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background:#fefce8;">
+                                        <td colspan="4"><strong>MODELOS TEÓRICOS / TRADICIONALES</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Cascada</strong></td>
+                                        <td>Lineal</td>
+                                        <td>Secuencial. Fase tras fase. Documentación exhaustiva al inicio.</td>
+                                        <td>Requisitos fijos. Seguridad crítica. Cambio costoso.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Modelo V</strong></td>
+                                        <td>Verificación</td>
+                                        <td>Desarrollo <-> Pruebas. Validación temprana.</td>
+                                        <td>Gubernamentales/Médicos. Trazabilidad obligatoria.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Espiral</strong></td>
+                                        <td>Riesgos</td>
+                                        <td>Iterativo + Cascada. Gestión de riesgos en cada vuelta.</td>
+                                        <td>Proyectos grandes, complejos y costosos.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Prototipado</strong></td>
+                                        <td>Exploratorio</td>
+                                        <td>Versiones rápidas e incompletas.</td>
+                                        <td>Requisitos no claros. Definir UI.</td>
+                                    </tr>
+                                    <tr style="background:#dcfce7;">
+                                        <td colspan="4"><strong>REALIDAD EMPRESARIAL (ÁGIL)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Scrum</strong></td>
+                                        <td>Iterativo</td>
+                                        <td>Sprints cortos (2-3 sem). Roles definidos.</td>
+                                        <td>Estándar industria. Requisitos cambiantes.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Kanban</strong></td>
+                                        <td>Flujo</td>
+                                        <td>Sin iteraciones fijas. Tablero visual. WIP limitado.</td>
+                                        <td>Soporte y Mantenimiento. Tareas impredecibles.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>DevOps</strong></td>
+                                        <td>Automatización</td>
+                                        <td>Unión Dev+Ops. CI/CD. Infraestructura como código.</td>
+                                        <td>Empresas modernas. Entrega continua.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Roles del Equipo (Definiciones Completas)</h3>
+                <div style="display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                    <div class="card" style="margin:0; border-left:4px solid var(--primary);">
+                        <strong>Analista de Sistemas</strong>
+                        <p class="text-sm">Realiza un estudio del sistema para dirigir el proyecto. Garantiza las
+                            expectativas del cliente. Elabora el ERS.</p>
+                    </div>
+                    <div class="card" style="margin:0; border-left:4px solid var(--secondary);">
+                        <strong>Analista Programador</strong>
+                        <p class="text-sm">"Desarrollador". Visión amplia. Diseña soluciones amigables para la
+                            codificación y participa activamente en ella.</p>
+                    </div>
+                    <div class="card" style="margin:0; border-left:4px solid var(--text-light);">
+                        <strong>Diseñador</strong>
+                        <p class="text-sm">Evolución del analista. Realiza el diseño de la solución (diagramas,
+                            estructura) basada en el análisis previo.</p>
+                    </div>
+                    <div class="card" style="margin:0; border-left:4px solid #F59E0B;">
+                        <strong>Arquitecto de Software</strong>
+                        <p class="text-sm">La "argamasa" que cohesiona. Conoce frameworks y patrones. Revisa que se usen
+                            los recursos apropiados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. CPU / ORDENADOR (SIMULACIÓN INTERACTIVA) -->
+            <div id="cpu" class="view-section">
+                <h2>Funcionamiento del Ordenador</h2>
+                <p style="margin-bottom:1.5rem; color:var(--text-light);">Simulación del Ciclo de Instrucción:
+                    <strong>Fetch (Captación) &rarr; Decode (Decodificación) &rarr; Execute (Ejecución)</strong>.
+                </p>
+
+                <div class="card">
+                    <div class="cpu-board">
+                        <!-- CPU Internals -->
+                        <div class="cpu-box">
+                            <strong
+                                style="display:block; text-align:center; color:#475569; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">CPU
+                                (Procesador)</strong>
+
+                            <div style="display:flex; gap:10px; justify-content:center;">
+                                <div id="comp-uc" class="component" style="flex:1">UC<br><span
+                                        style="font-size:0.7rem; font-weight:normal;">(Control)</span></div>
+                                <div id="comp-alu" class="component" style="flex:1">ALU<br><span
+                                        style="font-size:0.7rem; font-weight:normal;">(Cálculo)</span></div>
+                            </div>
+
+                            <div class="arrow-down">&#8595;</div>
+
+                            <div style="display:flex; gap:10px; margin-top:5px;">
+                                <div id="comp-pc" class="component" style="flex:1; border-color:#6366F1;">PC: <span
+                                        id="val-pc" style="color:#4F46E5;">00</span></div>
+                                <div id="comp-ir" class="component" style="flex:1; border-color:#EC4899;">IR: <span
+                                        id="val-ir" style="color:#DB2777;">--</span></div>
+                            </div>
+
+                            <div
+                                style="text-align:center; margin:15px 0; font-size:0.75rem; color:#64748B; border-top:2px solid #cbd5e1; border-bottom:2px solid #cbd5e1; padding:5px; background:#f1f5f9;">
+                                BUS INTERNO DE DATOS</div>
+
+                            <div style="display:flex; gap:10px;">
+                                <div id="comp-mar" class="component" style="flex:1">MAR<br><span
+                                        style="font-size:0.7rem;">(Direcciones)</span></div>
+                                <div id="comp-mdr" class="component" style="flex:1">MDR<br><span
+                                        style="font-size:0.7rem;">(Datos)</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Memory -->
+                        <div class="cpu-box">
+                            <strong
+                                style="display:block; text-align:center; color:#475569; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">Memoria
+                                RAM</strong>
+                            <div id="mem-00" class="mem-cell"><span>00</span> <span>LOAD R1, #5</span></div>
+                            <div id="mem-01" class="mem-cell"><span>01</span> <span>ADD R1, #3</span></div>
+                            <div id="mem-02" class="mem-cell"><span>02</span> <span>STORE 10</span></div>
+                            <div id="mem-03" class="mem-cell"><span>03</span> <span>HALT</span></div>
+                            <hr style="border:0; border-top:2px dashed #e2e8f0; margin:10px 0;">
+                            <div id="mem-10" class="mem-cell"><span>10</span> <span id="val-mem-10">0</span></div>
+                            <div class="mem-cell" style="color:#94a3b8;"><span>11</span> <span>0</span></div>
+                        </div>
+                    </div>
+
+                    <div id="cpu-display" class="step-display">
+                        El sistema está listo. Pulsa "Siguiente Paso" para iniciar el ciclo Fetch-Decode-Execute.
+                    </div>
+
+                    <div style="margin-top:20px; display:flex; gap:15px; justify-content:center;">
+                        <button onclick="cpuNext()" class="toggle-btn"
+                            style="width:auto; background:var(--secondary); color:white; padding: 12px 24px; font-size:1rem; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);">
+                            &#9654; Siguiente Paso
+                        </button>
+                        <button onclick="cpuReset()" class="toggle-btn"
+                            style="width:auto; background:#EF4444; color:white; padding: 12px 24px; font-size:1rem;">
+                            &#8634; Reiniciar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. UML (COMPLETO) -->
+            <div id="uml" class="view-section">
+                <h2>Diagramas UML (Unified Modeling Language)</h2>
+                <p style="margin-bottom:1.5rem; color:var(--text-light);">Lenguaje visual estándar para especificar,
+                    construir y documentar artefactos de software.</p>
+
+                <div class="card">
+                    <h3>1. Diagrama de Clases (Estructural)</h3>
+                    <p style="font-size:0.95rem; margin-bottom:1rem; line-height:1.6;">Describe la estructura estática
+                        del sistema. Muestra las <strong>clases</strong>, sus <strong>atributos</strong> (datos),
+                        <strong>métodos</strong> (acciones) y las relaciones entre objetos (asociación, herencia,
+                        composición).
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:1rem;"><em>Se utiliza
+                            principalmente en la fase de Diseño para definir la arquitectura de datos.</em></p>
+
+                    <div
+                        style="display:flex; justify-content:center; gap:30px; background:#f8fafc; padding:30px; border-radius:12px; border:1px solid #e2e8f0;">
+                        <div class="uml-box">
+                            <strong>Usuario</strong>
+                            <hr style="margin:8px 0; border-color:#94a3b8;">
+                            - nombre: String<br>
+                            - email: String
+                            <hr style="margin:8px 0; border-color:#94a3b8;">
+                            + login(): void
+                        </div>
+                        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                            <span style="font-size:0.7rem; color:#64748B;">1..*</span>
+                            <div style="width:40px; height:2px; background:#334155;"></div>
+                            <span style="font-size:0.7rem; color:#64748B;">realiza</span>
+                        </div>
+                        <div class="uml-box">
+                            <strong>Pedido</strong>
+                            <hr style="margin:8px 0; border-color:#94a3b8;">
+                            - id: int<br>
+                            - total: float
+                            <hr style="margin:8px 0; border-color:#94a3b8;">
+                            + pagar(): bool
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>2. Diagrama de Secuencia (Comportamiento)</h3>
+                    <p style="font-size:0.95rem; margin-bottom:1rem; line-height:1.6;">Muestra la interacción de un
+                        conjunto de objetos a través del tiempo. Se centra en el orden cronológico de los mensajes que
+                        se intercambian. Utiliza "líneas de vida" verticales.</p>
+                    <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:1rem;"><em>Se utiliza para
+                            modelar la lógica de un caso de uso específico.</em></p>
+
+                    <div
+                        style="background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0; display:flex; justify-content:center;">
+                        <svg width="280" height="140">
+                            <!-- Lifelines -->
+                            <rect x="20" y="0" width="60" height="25" stroke="#334155" fill="white" rx="4" />
+                            <text x="50" y="17" text-anchor="middle" font-size="10"
+                                font-family="monospace">:Cliente</text>
+                            <line x1="50" y1="25" x2="50" y2="130" stroke="#334155" stroke-dasharray="4" />
+
+                            <rect x="180" y="0" width="60" height="25" stroke="#334155" fill="white" rx="4" />
+                            <text x="210" y="17" text-anchor="middle" font-size="10"
+                                font-family="monospace">:Sistema</text>
+                            <line x1="210" y1="25" x2="210" y2="130" stroke="#334155" stroke-dasharray="4" />
+
+                            <!-- Message 1 -->
+                            <line x1="50" y1="50" x2="205" y2="50" stroke="#334155" marker-end="url(#arrow)" />
+                            <text x="130" y="45" text-anchor="middle" font-size="10">1: solicitarLogin()</text>
+
+                            <!-- Message 2 -->
+                            <line x1="210" y1="90" x2="55" y2="90" stroke="#334155" stroke-dasharray="2"
+                                marker-end="url(#arrow)" />
+                            <text x="130" y="85" text-anchor="middle" font-size="10">2: confirmarAcceso()</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>3. Diagrama de Actividad (Comportamiento)</h3>
+                    <p style="font-size:0.95rem; margin-bottom:1rem; line-height:1.6;">Representa el flujo de trabajo
+                        paso a paso de negocio y operacionales de los componentes de un sistema. Muestra el flujo de
+                        control general.</p>
+                    <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:1rem;"><em>Es similar a un
+                            diagrama de flujo tradicional (Inicio -> Proceso -> Decisión -> Fin).</em></p>
+
+                    <div
+                        style="background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0; display:flex; flex-direction:column; align-items:center; gap:5px;">
+                        <div style="width:16px; height:16px; background:#334155; border-radius:50%;"></div>
+                        <div style="width:2px; height:20px; background:#334155;"></div>
+                        <div
+                            style="border:1px solid #334155; padding:6px 15px; border-radius:15px; font-size:0.8rem; background:white;">
+                            Validar Usuario</div>
+                        <div style="width:2px; height:20px; background:#334155;"></div>
+                        <div
+                            style="width:24px; height:24px; transform:rotate(45deg); border:1px solid #334155; background:white; display:flex; align-items:center; justify-content:center;">
+                        </div>
+                        <div
+                            style="display:flex; justify-content:space-between; width:120px; font-size:0.7rem; color:#64748B;">
+                            <span>[OK]</span><span>[Error]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. LENGUAJES (TABLAS COMPLETAS RESTAURADAS) -->
+            <div id="languages" class="view-section">
+                <h2>Lenguajes y Entornos</h2>
+
+                <div class="card">
+                    <h3>1. Lenguajes y Frameworks (Top 10)</h3>
+                    <div class="table-responsive">
+                        <table class="soft-table">
+                            <thead>
+                                <tr>
+                                    <th>Lenguaje</th>
+                                    <th>Frameworks / Librerías</th>
+                                    <th>Usos Habituales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="lang-badge lang-python">Python</span></td>
+                                    <td>Django, FastAPI, Pandas, NumPy</td>
+                                    <td>Ciencia de Datos, IA (ML/DL), Backend rápido.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-js">JavaScript</span></td>
+                                    <td>React, Vue.js, Express.js (Node)</td>
+                                    <td>Web Frontend, Backend (Node), Apps híbridas.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-java">Java</span></td>
+                                    <td>Spring Boot, Hibernate, Jakarta EE</td>
+                                    <td>Sistemas Enterprise, Backend bancario, Android.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-csharp">C#</span></td>
+                                    <td>.NET Core, Unity, MAUI</td>
+                                    <td>Videojuegos (Unity), Escritorio Windows, Backend.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-ts">TypeScript</span></td>
+                                    <td>Angular, Next.js, NestJS</td>
+                                    <td>Web Fullstack escalable, SPAs complejas.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-php">PHP</span></td>
+                                    <td>Laravel, Symfony, WordPress</td>
+                                    <td>Backend rápido, CMS, E-commerce.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-go">Go</span></td>
+                                    <td>Gin, Echo, Fiber, Docker</td>
+                                    <td>Microservicios alto rendimiento, Cloud/DevOps.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-kotlin">Kotlin</span></td>
+                                    <td>Jetpack Compose, Ktor</td>
+                                    <td>Nativo Android moderno, Backend.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-cpp">C++</span></td>
+                                    <td>Qt, Unreal Engine, Boost</td>
+                                    <td>Alto Rendimiento, Motores de Videojuegos.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="lang-badge lang-swift">Swift</span></td>
+                                    <td>UIKit, Vapor, SwiftUI</td>
+                                    <td>Desarrollo nativo ecosistema Apple (iOS, macOS).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>2. Clasificación por Entornos de Desarrollo</h3>
+                    <div class="table-responsive">
+                        <table class="soft-table">
+                            <thead>
+                                <tr>
+                                    <th>Entorno</th>
+                                    <th>Lenguajes</th>
+                                    <th>Herramientas (IDE)</th>
+                                    <th>Detalles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>PC + Windows</strong></td>
+                                    <td>C#, VB.NET</td>
+                                    <td>Visual Studio</td>
+                                    <td>Propietario Microsoft. Apps ventanas.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PC + Linux/Mac</strong></td>
+                                    <td>C, C++, Python</td>
+                                    <td>Eclipse, NetBeans, Xcode</td>
+                                    <td>Software libre, servidores.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Teléfono Android</strong></td>
+                                    <td>Java, Kotlin</td>
+                                    <td>Android Studio</td>
+                                    <td>Entorno oficial. Máquina virtual.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>iPhone + iOS</strong></td>
+                                    <td>Swift, Obj-C</td>
+                                    <td>Xcode</td>
+                                    <td>Oficial Apple.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>JVM (Java VM)</strong></td>
+                                    <td>Java</td>
+                                    <td>IntelliJ, Eclipse</td>
+                                    <td>Desarrollo multiplataforma.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Web (Front)</strong></td>
+                                    <td>JS, TypeScript</td>
+                                    <td>VS Code, Nav</td>
+                                    <td>Ejecución en navegador.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Web (Back)</strong></td>
+                                    <td>PHP, Java, Python</td>
+                                    <td>VS Code, IntelliJ</td>
+                                    <td>Servidores.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Televisión (LG)</strong></td>
+                                    <td>webOS (JS)</td>
+                                    <td>webOS SDK</td>
+                                    <td>Apps Smart TV.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IoT</strong></td>
+                                    <td>C, C++</td>
+                                    <td>Arduino IDE</td>
+                                    <td>Sistemas embebidos.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. GLOSARIO (TEXTOS ORIGINALES COMPLETOS) -->
+            <div id="oop" class="view-section">
+                <h2>Glosario POO (Definiciones Completas)</h2>
+                <div style="display:grid; gap:1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+
+                    <div class="gloss-card" style="border-left-color: #4F46E5;">
+                        <strong style="color: #4F46E5;">Clase</strong>
+                        <p>Es un tipo de dato definido por el programador. Describe propiedades y métodos comunes para
+                            los objetos creados a partir de ella. No se usa directamente: debe instanciarse.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #10B981;">
+                        <strong style="color: #10B981;">Objeto (Instancia)</strong>
+                        <p>Elemento creado a partir de una clase. Tiene sus propios valores en memoria.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #F59E0B;">
+                        <strong style="color: #F59E0B;">Variable (Referencia)</strong>
+                        <p>Identificador que almacena la dirección de memoria de un objeto; permite operar sobre él. La
+                            variable no es el objeto.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #06B6D4;">
+                        <strong style="color: #06B6D4;">Instanciar</strong>
+                        <p>Crear un objeto a partir de una clase usando <code>new</code>.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #EC4899;">
+                        <strong style="color: #EC4899;">Constructor</strong>
+                        <p>Método que se ejecuta al instanciar un objeto y sirve para inicializar sus propiedades.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #8B5CF6;">
+                        <strong style="color: #8B5CF6;">Miembro</strong>
+                        <p>Cada propiedad o método definido dentro de una clase.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #14B8A6;">
+                        <strong style="color: #14B8A6;">Encapsulación</strong>
+                        <p>Protege los datos internos del objeto controlando el acceso mediante modificadores y métodos
+                            específicos.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #3B82F6;">
+                        <strong style="color: #3B82F6;">Composición</strong>
+                        <p>Una clase contiene objetos de otras clases como propiedades. Al crear un objeto, también se
+                            crean en cadena los objetos que contiene.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #6366F1;">
+                        <strong style="color: #6366F1;">Herencia</strong>
+                        <p>Una clase recibe propiedades y métodos de otra. Normalmente es simple. Puede sobrescribir
+                            métodos heredados.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #D946EF;">
+                        <strong style="color: #D946EF;">Polimorfismo</strong>
+                        <p>Permite que un mismo método o referencia opere con objetos de distintos tipos derivados,
+                            adaptando el comportamiento.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #64748B;">
+                        <strong style="color: #64748B;">Clase Abstracta</strong>
+                        <p>Clase que no puede instanciarse. Puede contener métodos implementados o abstractos. Obliga a
+                            implementar métodos en clases hijas.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #1E3A8A;">
+                        <strong style="color: #1E3A8A;">Interfaz / Protocolo</strong>
+                        <p>Contrato que define métodos que una clase debe implementar, sin implementación concreta.</p>
+                    </div>
+
+                    <div class="gloss-card" style="border-left-color: #94a3b8;">
+                        <strong style="color: #475569;">Paso de mensaje</strong>
+                        <p>Los objetos se comunican llamando métodos entre sí, solicitando acciones.</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SVG Definitions -->
+    <svg style="display:none;">
+        <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="#334155" />
+            </marker>
+        </defs>
+    </svg>
+
+    <script>
+        // --- DOWNLOAD APP ---
+        function downloadApp() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'ED_Definitiva_App.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            alert("App descargada correctamente. Abre el archivo 'ED_Definitiva_App.html' desde tu tablet.");
+        }
+
+        // --- NAVIGATION ---
+        function showView(id, btn) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelector('.content-area').scrollTop = 0;
+        }
+
+        // --- CPU SIMULATION LOGIC ---
+        let cpuS = 0, pc = 0;
+
+        function cpuReset() {
+            cpuS = 0; pc = 0;
+            document.querySelectorAll('.component, .mem-cell').forEach(e => e.classList.remove('active'));
+            document.getElementById('val-pc').innerText = "00";
+            document.getElementById('val-ir').innerText = "--";
+            document.getElementById('val-mem-10').innerText = "0";
+            document.getElementById('cpu-display').innerText = "Simulación reiniciada.";
+        }
+
+        function cpuNext() {
+            document.querySelectorAll('.component, .mem-cell').forEach(e => e.classList.remove('active'));
+
+            const ph = cpuS % 5;
+            const instr = Math.floor(cpuS / 5);
+
+            if (instr > 3) {
+                document.getElementById('cpu-display').innerText = "Fin del programa (HALT).";
+                return;
+            }
+
+            // Keep current memory row highlighted for context
+            if (ph < 3) document.getElementById('mem-0' + instr).classList.add('active');
+
+            if (ph === 0) { // Fetch 1
+                document.getElementById('comp-pc').classList.add('active');
+                document.getElementById('comp-mar').classList.add('active');
+                document.getElementById('cpu-display').innerHTML = `<strong>FETCH (1/3)</strong>: El PC envía la dirección <span style='color:#F59E0B'>${instr}</span> al MAR.`;
+            } else if (ph === 1) { // Fetch 2
+                document.getElementById('comp-mar').classList.add('active');
+                document.getElementById('comp-mdr').classList.add('active');
+                document.getElementById('cpu-display').innerHTML = `<strong>FETCH (2/3)</strong>: La Memoria lee la dirección y pone el dato en el MDR.`;
+            } else if (ph === 2) { // Fetch 3
+                document.getElementById('comp-mdr').classList.add('active');
+                document.getElementById('comp-ir').classList.add('active');
+                let opCodes = ["LOAD R1, #5", "ADD R1, #3", "STORE 10", "HALT"];
+                document.getElementById('val-ir').innerText = opCodes[instr].split(' ')[0]; // Show OPCODE
+                document.getElementById('cpu-display').innerHTML = `<strong>FETCH (3/3)</strong>: La instrucción viaja del MDR al IR.`;
+            } else if (ph === 3) { // Decode
+                document.getElementById('comp-uc').classList.add('active');
+                document.getElementById('comp-ir').classList.add('active');
+                document.getElementById('cpu-display').innerHTML = `<strong>DECODE</strong>: La Unidad de Control interpreta qué hacer.`;
+            } else if (ph === 4) { // Execute
+                document.getElementById('comp-alu').classList.add('active');
+                let msg = "";
+                if (instr === 0) msg = "Cargando valor 5 en registro interno.";
+                if (instr === 1) msg = "Sumando 3 (Resultado: 8).";
+                if (instr === 2) {
+                    msg = "Guardando 8 en posición de memoria 10.";
+                    document.getElementById('mem-10').classList.add('active');
+                    document.getElementById('val-mem-10').innerText = "8";
+                }
+                if (instr === 3) msg = "Deteniendo CPU.";
+
+                pc++;
+                document.getElementById('val-pc').innerText = "0" + pc;
+                document.getElementById('cpu-display').innerHTML = `<strong>EXECUTE</strong>: ${msg} (PC avanza).`;
+            }
+            cpuS++;
+        }
+
+        // --- LIFECYCLE (DEFINICIONES ORIGINALES RESTAURADAS) ---
+        const models = {
+            waterfall: {
+                title: "Cascada (Waterfall)",
+                desc: "Modelo lineal estricto. Procedimiento completo:",
+                steps: [
+                    "1. <strong>Análisis:</strong> Entrevista cliente, requisitos, informe ERS.",
+                    "2. <strong>Diseño:</strong> Estructura técnica, diagrama clases, Cuaderno de Carga.",
+                    "3. <strong>Codificación:</strong> Traducción del diseño a código fuente.",
+                    "4. <strong>Pruebas:</strong> Verificar fallos y que cumple requisitos.",
+                    "5. <strong>Documentación:</strong> Manuales usuario y técnica.",
+                    "6. <strong>Explotación:</strong> Instalación y puesta en marcha.",
+                    "7. <strong>Mantenimiento:</strong> Corrección y mejoras (cíclico)."
+                ]
+            },
+            vmodel: {
+                title: "Modelo en V",
+                desc: "Variación de la cascada doblada hacia arriba. Énfasis en validación:",
+                steps: [
+                    "• Requisitos <-> Pruebas de Sistema",
+                    "• Diseño Alto Nivel <-> Pruebas de Integración",
+                    "• Código <-> Pruebas Unitarias",
+                    "Uso: Sistemas críticos o gubernamentales."
+                ]
+            },
+            spiral: {
+                title: "Espiral",
+                desc: "Combina iteraciones con cascada. Clave: Gestión de Riesgos.",
+                steps: [
+                    "1. Determinar Objetivos.",
+                    "2. Análisis de Riesgos (Prototipos).",
+                    "3. Desarrollar y probar.",
+                    "4. Planificar siguiente vuelta."
+                ]
+            },
+            prototyping: {
+                title: "Prototipado",
+                desc: "Modelo exploratorio.",
+                steps: [
+                    "• Creación rápida de versiones 'de usar y tirar'.",
+                    "• Objetivo: Aclarar requisitos con el cliente.",
+                    "• Se usa para definir la Interfaz (UI)."
+                ]
+            },
+            incremental: {
+                title: "Incremental",
+                desc: "Construcción por módulos funcionales.",
+                steps: [
+                    "• Se entrega un núcleo básico operativo.",
+                    "• Se añaden nuevas funcionalidades en cada entrega.",
+                    "• Útil cuando se necesita el software rápido."
+                ]
+            },
+            agile: {
+                title: "Ágil & DevOps",
+                desc: "Realidad empresarial actual.",
+                steps: [
+                    "• <strong>Scrum:</strong> Sprints cortos (2-3 sem).",
+                    "• <strong>Kanban:</strong> Flujo continuo (Tablero).",
+                    "• <strong>DevOps:</strong> Integración continua (CI/CD)."
+                ]
+            }
+        };
+
+        function renderModel(key, btn) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            const m = models[key];
+            const s = m.steps.map(x => `<div class="process-step">${x}</div>`).join('');
+            document.getElementById('model-content').innerHTML = `<h3>${m.title}</h3><p style="margin-bottom:15px;">${m.desc}</p>${s}`;
+        }
+
+        // Init
+        renderModel('waterfall', document.querySelector('.chip'));
+    </script>
+</body>
+
+</html>
